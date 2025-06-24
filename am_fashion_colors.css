@@ -1,0 +1,84 @@
+
+:root {
+    --primary-color: #007aff;
+    --dark-text: #2d2d2d;
+    --light-bg: #f8f8f8;
+    --light-text: #666;
+    --border-color: #ddd;
+    --accent-green: #018849;
+    --accent-orange: #ff9c32;
+    --accent-blue: #0770cf;
+    --accent-pink: #d01345;
+    --accent-purple: #6f5cff;
+    --accent-red: #ff3b30;
+    --background-gray: #f1f3f9;
+    --surface-white: #fff;
+    --text-black: #111213;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+h1, h2, h3, h4 {
+    color: var(--text-black);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+nav {
+    background-color: var(--surface-white);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+nav a {
+    margin-right: 1rem;
+    color: var(--dark-text);
+}
+
+nav a:hover {
+    color: var(--accent-blue);
+}
+
+.marquee {
+    background-color: var(--accent-pink);
+    color: var(--surface-white);
+    padding: 0.75rem;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.marquee span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+.button {
+    background-color: var(--accent-green);
+    color: var(--surface-white);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.button:hover {
+    background-color: var(--accent-blue);
+}

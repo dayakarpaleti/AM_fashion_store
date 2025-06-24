@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AM Fashion Store - External JSON</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+    }
+    header, footer {
+      background-color: #d63384;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    nav {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      gap: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .product {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      overflow: hidden;
+      width: 240px;
+      text-align: center;
+    }
+    .product img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .product h3 {
+      margin: 0.5rem 0;
+    }
+    .product p {
+      color: #d63384;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div style="white-space: nowrap; overflow: hidden; background: #d63384; color: white; font-weight: bold; font-size: 1.1rem;">
+  <div style="display: inline-block; padding-left: 100%; animation: scroll-left 12s linear infinite;">
+    ✨ WELCOME TO AM FASHION STORE — WHERE STYLE MEETS TECHNOLOGY ✨
+  </div>
+</div>
+<style>
+  @keyframes scroll-left {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+</style>
+<header>
+  <h1>AM Fashion Store</h1>
+  <p>Powered by External JSON Data</p>
+</header>
+
+<nav>
+  <select id="mainCategory" onchange="renderProducts()">
+    <option value="all">All Categories</option>
+  </select>
+
+  <select id="subCategory" onchange="renderProducts()">
+    <option value="all">All Subcategories</option>
+  </select>
+</nav>
+
+<div class="products" id="productContainer"></div>
+
+<footer>
+  &copy; 2025 AM Fashion Store. All rights reserved.
+</footer>
+
+<script>
+let productData = [];
+
+async function fetchProducts() {
+  const res = await fetch("products.json");
+  productData = await res.json();
+
+  const categories = [...new Set(productData.map(p => p.category))];
+  const categorySelect = document.getElementById("mainCategory");
+  categories.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.textContent = cat;
+    categorySelect.appendChild(opt);
+  });
+
+  renderProducts();
+}
+
+function renderProducts() {
+  const mainCat = document.getElementById("mainCategory").value;
+  const subSelect = document.getElementById("subCategory");
+  const container = document.getElementById("productContainer");
+  container.innerHTML = "";
+
+  const subs = [...new Set(productData.filter(p => mainCat === "all" || p.category === mainCat).map(p => p.sub))];
+  subSelect.innerHTML = '<option value="all">All Subcategories</option>';
+  subs.forEach(sub => {
+    const opt = document.createElement("option");
+    opt.value = sub;
+    opt.textContent = sub;
+    subSelect.appendChild(opt);
+  });
+
+  const subCat = subSelect.value;
+
+  const filtered = productData.filter(p => {
+    const mainMatch = mainCat === "all" || p.category === mainCat;
+    const subMatch = subCat === "all" || p.sub === subCat;
+    return mainMatch && subMatch;
+  });
+
+  filtered.forEach(product => {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+      <img src="${product.image}" alt="${product.title}" />
+      <h3>${product.title}</h3>
+      <p>${product.price}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+
+fetchProducts();
+</script>
+
+</body>
+</html>
